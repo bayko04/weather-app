@@ -1,5 +1,4 @@
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
     setFahrenheit,
     setMyLocation,
@@ -15,8 +14,7 @@ import Burger from "./Burger"
 import { IRoot } from "../types/IRoot"
 
 const Header = () => {
-    const darkMode = useSelector((state: IRoot) => state.weather.darkMode)
-    const burger = useSelector((state: IRoot) => state.weather.burger)
+    const { darkMode, burger } = useSelector((state: IRoot) => state.weather)
     const dispatch = useDispatch()
 
     const getLocation = () => {
@@ -37,6 +35,21 @@ const Header = () => {
         }
     }
 
+    const handleLocationClick = () => {
+        getLocation()
+        dispatch(setBurger())
+    }
+
+    const handleDarkModeClick = () => {
+        dispatch(setDarkMode())
+        dispatch(setBurger())
+    }
+
+    const handleFahrenheitClick = () => {
+        dispatch(setFahrenheit())
+        dispatch(setBurger())
+    }
+
     return (
         <div className="header">
             <div className="container">
@@ -46,10 +59,7 @@ const Header = () => {
                         <ul className={`header__list ${burger ? "hide" : ""}`}>
                             <li
                                 title="свой город"
-                                onClick={() => {
-                                    getLocation()
-                                    dispatch(setBurger())
-                                }}
+                                onClick={handleLocationClick}
                                 className="header__location"
                             >
                                 <img
@@ -58,10 +68,7 @@ const Header = () => {
                                 />
                             </li>
                             <li
-                                onClick={() => {
-                                    dispatch(setDarkMode())
-                                    dispatch(setBurger())
-                                }}
+                                onClick={handleDarkModeClick}
                                 className="header__darkMode"
                             >
                                 <img
@@ -72,10 +79,7 @@ const Header = () => {
                             </li>
                             <li
                                 title="сменить единицу измерения"
-                                onClick={() => {
-                                    dispatch(setFahrenheit())
-                                    dispatch(setBurger())
-                                }}
+                                onClick={handleFahrenheitClick}
                                 className="header__fahrenheit"
                             >
                                 <img
